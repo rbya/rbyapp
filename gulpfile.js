@@ -4,13 +4,15 @@ var gulp = require('gulp');
 var requireDir = require('require-dir');
 var minimist = require('minimist');
 var chalk = require('chalk');
+var $ = require('gulp-load-plugins')();
 
 // Configure paths
 gulp.paths = {
   client: {
-    dist: 'client/www',
+    dist: 'client/www/',
     src: 'client/src/**/*.js',
-    templates: 'client/**/*.jade',
+    tmp: 'client/.tmp',
+    templates: 'client/src/modules/**/*.jade',
     karma: 'client/test/karma/**/*.js',
     protractor: 'client/test/protractor/**/*.js'
   },
@@ -26,6 +28,9 @@ gulp.helpers = {
   },
   warn: function (msg) {
     console.log(chalk.white.bgYellow.bold(msg));
+  },
+  info: function (msg) {
+    console.log(chalk.white.bgBlue.bold(msg));
   }
 };
 
@@ -43,4 +48,10 @@ requireDir('./tasks');
 
 gulp.task('default', function () {
   gulp.helpers.warn("No task specified");
+});
+
+gulp.task('clean', function () {
+  // clean the client/www folder
+  return gulp.src(gulp.paths.client.dist, {read: false})
+    .pipe(clean());
 });
