@@ -5,8 +5,8 @@ Desc
 deps
 
 ## Building Locally
- build info
- 
+`gulp build --end=dev`
+   
 ## Testing
   test info
   
