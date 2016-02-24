@@ -2,6 +2,8 @@
 
 var gulp = require('gulp');
 var requireDir = require('require-dir');
+var minimist = require('minimist');
+var chalk = require('chalk');
 
 // Configure paths
 gulp.paths = {
@@ -15,6 +17,30 @@ gulp.paths = {
   server: {}
 };
 
-// Load available tasks
-requireDir('./gulp');
+gulp.helpers = {
+  error: function (msg) {
+    console.log(chalk.white.bgRed.bold(msg));
+  },
+  success: function (msg) {
+    console.log(chalk.white.bgGreen.bold(msg));
+  },
+  warn: function (msg) {
+    console.log(chalk.white.bgYellow.bold(msg));
+  }
+};
 
+// Get command line options
+var options = gulp.options = minimist(process.argv.slice(2));
+
+// The first option is that task name
+var task = options._[0];
+
+// Set default environment
+options.env = options.env || 'dev';
+
+// Load available tasks
+requireDir('./tasks');
+
+gulp.task('default', function () {
+  gulp.helpers.warn("No task specified");
+});
