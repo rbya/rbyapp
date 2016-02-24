@@ -32,6 +32,10 @@
     "ionic-platform-web-client": "^0.2.1"
   },
   "resolutions": {
-    "angular": "1.5.0"
+    "angular": "1.5.0",
+    "ionic": "0.2.18",
+    "angular-animate": "1.5.0",
+    "angular-ui-router": "0.2.18",
+    "angular-sanitize": "^1.5.0"
   }
 }
