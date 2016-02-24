@@ -8,7 +8,7 @@ var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep');
 var mainBowerFiles = require('main-bower-files');
 
-gulp.task('inject-all', ['styles', 'wiredep'], function () {
+gulp.task('inject-all', ['styles', 'wiredep', 'copySources'], function () {
   return gulp.src('client/www/index.html')
     .pipe(
       // Inject src JS
