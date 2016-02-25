@@ -6,14 +6,20 @@ var paths = gulp.paths;
 var options = gulp.options;
 var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep');
-var mainBowerFiles = require('main-bower-files');
+var runSequence = require('run-sequence');
 
-gulp.task('inject-all', ['styles', 'wiredep', 'copySources'], function () {
+gulp.task('inject-all', function () {
+  runSequence('build', 'injectSources', 'injectDependencies', function () {
+    gulp.helpers.success('Injecting finished');
+  });
+});
+
+gulp.task('injectSources', function () {
   return gulp.src('client/www/index.html')
     .pipe(
       // Inject src JS
       $.inject(
-        gulp.src(paths.client.src)
+        gulp.src(paths.client.dist + '/**/*.js')
           .pipe($.plumber())
           .pipe($.naturalSort())
           .pipe($.angularFilesort()),
@@ -23,10 +29,9 @@ gulp.task('inject-all', ['styles', 'wiredep', 'copySources'], function () {
     .pipe(
       // Inject compiled css
       $.inject(
-        gulp.src('client/.tmp/**/styles/*.css', {read: false})
+        gulp.src(paths.client.dist + '**/styles/*.css', {read: false})
           .pipe($.naturalSort()),
         {
-          ignorePath: '../client/.tmp',
           relative: true
         }
       )
@@ -34,22 +39,13 @@ gulp.task('inject-all', ['styles', 'wiredep', 'copySources'], function () {
     .pipe(gulp.dest('client/www'))
 });
 
-gulp.task('styles', function () {
-  return gulp.src('client/src/modules/*/styles/!(_)*.scss')
-    .pipe($.plumber())
-    .pipe($.sourcemaps.init())
-    .pipe($.sass.sync().on('error', $.sass.logError))
-    .pipe($.autoprefixer({browsers: ['last 2 versions'], remove: false}))
-    .pipe($.sourcemaps.write('.'))
-    .pipe(gulp.dest('client/.tmp/'));
-});
-
-gulp.task('wiredep', function () {
-  return gulp.src('client/src/index.html')
+gulp.task('injectDependencies', function () {
+  return gulp.src('client/www/index.html')
     .pipe(wiredep.stream())
     .pipe(gulp.dest('client/www'))
 });
 
 gulp.task('environment', function () {
+  return;
   // Need an ng constant generator
 });
