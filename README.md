@@ -5,7 +5,7 @@ Desc
 deps
 
 ## Building Locally
-`gulp build --end=dev`
+`gulp watch` builds the app and runs in the browser
    
 ## Testing
   test info
