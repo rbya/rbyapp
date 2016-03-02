@@ -8,9 +8,10 @@ var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep');
 var runSequence = require('run-sequence');
 
-gulp.task('inject-all', function () {
+gulp.task('inject-all', function (done) {
   runSequence('build', 'injectSources', 'injectDependencies', function () {
     gulp.helpers.success('Injecting finished');
+    done()
   });
 });
 

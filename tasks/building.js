@@ -8,8 +8,10 @@ var $ = require('gulp-load-plugins')();
 var wiredep = require('wiredep');
 var mainBowerFiles = require('main-bower-files');
 
-gulp.task('build', ['copySources', 'compileScss', 'compileJade', 'copyIndexFile'], function () {
-  gulp.helpers.success("Building finished")
+gulp.task('build', ['copySources', 'compileScss', 'compileJade', 'copyIndexFile'], function (done) {
+  gulp.helpers.success("Building finished");
+  done()
+
 });
 
 gulp.task('copyIndexFile', function () {
