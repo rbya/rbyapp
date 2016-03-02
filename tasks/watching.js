@@ -22,9 +22,16 @@ gulp.task('watch', ['inject-all'], function () {
     paths.client.templates
   ];
 
-  gulp.watch(files, ['inject-all'], function (event) {
+  gulp.watch(files, ['refresh'], function (event) {
     var filename = event.path.split('/')[event.path.split('/').length - 1];
-    gulp.helpers.info('File ' + filename + ' was ' + event.type + ', Re-building...');
-    bs.reload()
+    gulp.helpers.info('File ' + filename + ' was ' + event.type + ' ... rebuild ... done');
   });
+
+  gulp.helpers.info('Watching files for changes...')
+});
+
+gulp.task('refresh', ['inject-all'], function (done) {
+  gulp.helpers.info("Refreshing...");
+  bs.reload();
+  done()
 });
