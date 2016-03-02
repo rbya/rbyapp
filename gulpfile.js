@@ -24,7 +24,7 @@ gulp.helpers = {
     console.log(chalk.white.bgRed.bold(msg));
   },
   success: function (msg) {
-    console.log(chalk.white.bgGreen.bold(msg));
+    console.log(chalk.black.bgGreen.bold(msg));
   },
   warn: function (msg) {
     console.log(chalk.white.bgYellow.bold(msg));
