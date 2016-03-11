@@ -1,57 +1,81 @@
 'use strict';
-
 var gulp = require('gulp');
-var requireDir = require('require-dir');
 var minimist = require('minimist');
+var requireDir = require('require-dir');
 var chalk = require('chalk');
-var $ = require('gulp-load-plugins')();
+var fs = require('fs');
 
-// Configure paths
+// config
 gulp.paths = {
-  client: {
-    dist: 'client/www/',
-    src: 'client/src/**/*.js',
-    tmp: 'client/.tmp',
-    templates: 'client/src/modules/**/*.jade',
-    karma: 'client/test/karma/**/*.js',
-    protractor: 'client/test/protractor/**/*.js'
-  },
-  server: {}
+  dist: 'www',
+  jsFiles: ['app/**/*.js', '!app/bower_components/**/*.js'],
+  jsonFiles: ['app/**/*.json', '!app/bower_components/**/*.json'],
+  templates: ['app/*/views/**/*'],
+  contrib: ['gulpfile.js', 'gulp/**/*.js', 'hooks/**/*.js'],
+  karma: ['test/karma/**/*.js'],
+  protractor: ['test/protractor/**/*.js']
 };
 
-gulp.helpers = {
-  error: function (msg) {
-    console.log(chalk.white.bgRed.bold(msg));
-  },
-  success: function (msg) {
-    console.log(chalk.black.bgGreen.bold(msg));
-  },
-  warn: function (msg) {
-    console.log(chalk.white.bgYellow.bold(msg));
-  },
-  info: function (msg) {
-    console.log(chalk.white.bgBlue.bold(msg));
-  }
-};
-
-// Get command line options
+// OPTIONS
 var options = gulp.options = minimist(process.argv.slice(2));
 
-// The first option is that task name
-var task = options._[0];
+// set defaults
+var task = options._[0]; // only for first task
+var gulpSettings;
+if (fs.existsSync('./gulp/.gulp_settings.json')) {
+  gulpSettings = require('./gulp/.gulp_settings.json');
+  var defaults = gulpSettings.defaults;
+  if (defaults) {
+    // defaults present for said task?
+    if (task && task.length && defaults[task]) {
+      var taskDefaults = defaults[task];
+      // copy defaults to options object
+      for (var key in taskDefaults) {
+        // only if they haven't been explicitly set
+        if (options[key] === undefined) {
+          options[key] = taskDefaults[key];
+        }
+      }
+    }
+  }
+}
 
-// Set default environment
+// environment
 options.env = options.env || 'dev';
+// print options
+if (defaults && defaults[task]) {
+  console.log(chalk.green('defaults for task \'' + task + '\': '), defaults[task]);
+}
+// cordova command one of cordova's build commands?
+if (options.cordova) {
+  var cmds = ['build', 'run', 'emulate', 'prepare', 'serve'];
+  for (var i = 0, cmd; ((cmd = cmds[i])); i++) {
+    if (options.cordova.indexOf(cmd) >= 0) {
+      options.cordovaBuild = true;
+      break;
+    }
+  }
+}
 
-// Load available tasks
-requireDir('./tasks');
+// load tasks
+requireDir('./gulp');
 
+// default task
 gulp.task('default', function () {
-  gulp.helpers.warn("No task specified");
-});
-
-gulp.task('clean', function () {
-  // clean the client/www folder
-  return gulp.src(gulp.paths.client.dist, {read: false})
-    .pipe(clean());
+  // cordova build command & gulp build
+  if (options.cordovaBuild && options.build !== false) {
+    return gulp.start('cordova-with-build');
+  }
+  // cordova build command & no gulp build
+  else if (options.cordovaBuild && options.build === false) {
+    return gulp.start('cordova-only-resources');
+  }
+  // cordova non-build command
+  else if (options.cordova) {
+    return gulp.start('cordova');
+  }
+  // just watch when cordova option not present
+  else {
+    return gulp.start('watch');
+  }
 });

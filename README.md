@@ -21,6 +21,11 @@ Desc
   1. Clone this repo
   2. Install node dependencies with `npm install`
   3. Run the app locally using `gulp watch`
+  
+## Testing on mobile device
+  1. Run `gulp build` (If this fails because of linting problems, run with `--force-build` argument)
+  2. Deploy to ionic sandbox `ionic upload --deploy`
+  
    
 ## Testing
   in progress
