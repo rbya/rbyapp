@@ -16,7 +16,8 @@ Desc
 <img alt="Protractor" src="https://cloud.githubusercontent.com/assets/1370779/9410114/b99aaa9a-481e-11e5-8655-ebc1e324200d.png" width="70">
 </p>
 ## Prerequisites
-
+  - NPM
+  - Bower
 ## Building Locally
   1. Clone this repo
   2. Install node dependencies with `npm install`
