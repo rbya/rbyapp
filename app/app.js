@@ -10,7 +10,6 @@ angular.module('RBYA', [
         clientID: 'xVDY2rnSpY2wHHoUru06YXDlPzXyN6OM',
         loginUrl: '/login'
     });
-}).run(function ($scope, auth) {
-    //$scope.on('login', function() {});
+}).run(function (auth) {
     auth.hookEvents();
 });
