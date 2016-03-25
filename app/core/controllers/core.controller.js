@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.core').controller('CoreCtrl', function ($scope, $state, $ionicLoading, $ionicModal, RegisterFields, $ionicPopup, LoginFields, DS, auth) {
+angular.module('app.core').controller('CoreCtrl', function ($scope, $state, $ionicLoading, $ionicModal, $ionicPopup, DS, auth) {
   if (auth.isAuthenticated) {
       $state.go('app.dash');
   }
