@@ -32,4 +32,8 @@
     <plugin name="cordova-plugin-network-information" spec="~1.2.0" />
     <plugin name="cordova-plugin-splashscreen" spec="~3.1.0" />
     <plugin name="cordova-plugin-statusbar" spec="~2.1.1" />
+    <feature name="InAppBrowser">
+        <param name="ios-package" value="CDVInAppBrowser" />
+        <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+    </feature>
 </widget>

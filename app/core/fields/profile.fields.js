@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('app.core').value('RegisterFields',
+angular.module('app.core').value('ProfileFields',
   [{
     key: "divider",
     type: "item-divider",

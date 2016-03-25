@@ -1,16 +1,13 @@
 'use strict';
 
-angular.module('app.core').controller('AppCtrl', function (SideMenu, $timeout, $ionicHistory, $state, DS) {
+angular.module('app.core').controller('AppCtrl', function (SideMenu, $timeout, $ionicHistory, $state, DS, auth) {
   this.sideMenuItems = SideMenu.getItems();
 
   this.logout = function () {
-    //DS.adapters[DS.defaults.defaultAdapter].logout().then(function () {
-    //  $timeout(function () {
-    //    $ionicHistory.clearCache()
-    //  }, 500);
-    //  $state.go('core.main');
-    //});
+    auth.signout();
+    store.remove('profile');
+    store.remove('token');
 
-    $state.go('core.main'); // Temp auth bypass
+    $state.go('core.main');
   }
 });
