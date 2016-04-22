@@ -1,15 +1,42 @@
 <ion-view class="padding">
-  <ion-slides options="main.options.slides" slider="slider">
+  <div class="bar bar-header bar-light">
+    <h1 class="title" ng-model="title">RBYApp</h1>
+  </div>
+  <ion-content class="has-header">
 
-    <ion-slide-page>
+    <div class="list">
+      <ion-input class="item item-input">
+        <i class="icon placeholder-icon ion-email padding-right"></i>
+        <input type="text" placeholder="Email Address" ng-model="login.email" />
+      </ion-input>
+      <ion-input class="item item-input">
+        <i class="icon placeholder-icon ion-locked"></i>
+        <input type="password" placeholder="Password" ng-model="login.password" />
+      </ion-input>
+    </div>
+
+    <div class="padding">
       <button ng-click="core.login()" class="button button-block button-positive">
         Login
       </button>
-    </ion-slide-page>
-    <ion-slide-page>
-      <div class="box blue">
-        <h1>intro</h1>
-      </div>
-    </ion-slide-page>
-  </ion-slides>
+      <button ng-click="core.register()" class="button button-block">
+        Register
+      </button>
+    </div>
+    
+    <h4 class="text-center">Or use an existing account</h4>
+
+    <div class="padding">
+      <button class="button button-block button-calm">
+        <i class="icon icon-2x ion-social-facebook padding-right"></i>
+        Login with Facebook
+      </button>
+
+      <button class="button button-block button-calm">
+        <i class="icon ion-social-instagram padding-right"></i>
+        Login with Instagram
+      </button>
+    </div>
+
+  </ion-content>
 </ion-view>
