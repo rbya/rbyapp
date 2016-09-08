@@ -1,81 +1,74 @@
-'use strict';
-var gulp = require('gulp');
-var minimist = require('minimist');
-var requireDir = require('require-dir');
-var chalk = require('chalk');
-var fs = require('fs');
+var gulp = require('gulp'),
+    gulpWatch = require('gulp-watch'),
+    del = require('del'),
+    runSequence = require('run-sequence'),
+    argv = process.argv;
 
-// config
-gulp.paths = {
-  dist: 'www',
-  jsFiles: ['app/**/*.js', '!app/bower_components/**/*.js'],
-  jsonFiles: ['app/**/*.json', '!app/bower_components/**/*.json'],
-  templates: ['app/*/views/**/*'],
-  contrib: ['gulpfile.js', 'gulp/**/*.js', 'hooks/**/*.js'],
-  karma: ['test/karma/**/*.js'],
-  protractor: ['test/protractor/**/*.js']
-};
 
-// OPTIONS
-var options = gulp.options = minimist(process.argv.slice(2));
+/**
+ * Ionic hooks
+ * Add ':before' or ':after' to any Ionic project command name to run the specified
+ * tasks before or after the command.
+ */
+gulp.task('serve:before', ['watch']);
+gulp.task('emulate:before', ['build']);
+gulp.task('deploy:before', ['build']);
+gulp.task('build:before', ['build']);
 
-// set defaults
-var task = options._[0]; // only for first task
-var gulpSettings;
-if (fs.existsSync('./gulp/.gulp_settings.json')) {
-  gulpSettings = require('./gulp/.gulp_settings.json');
-  var defaults = gulpSettings.defaults;
-  if (defaults) {
-    // defaults present for said task?
-    if (task && task.length && defaults[task]) {
-      var taskDefaults = defaults[task];
-      // copy defaults to options object
-      for (var key in taskDefaults) {
-        // only if they haven't been explicitly set
-        if (options[key] === undefined) {
-          options[key] = taskDefaults[key];
-        }
-      }
+// we want to 'watch' when livereloading
+var shouldWatch = argv.indexOf('-l') > -1 || argv.indexOf('--livereload') > -1;
+gulp.task('run:before', [shouldWatch ? 'watch' : 'build']);
+
+/**
+ * Ionic Gulp tasks, for more information on each see
+ * https://github.com/driftyco/ionic-gulp-tasks
+ *
+ * Using these will allow you to stay up to date if the default Ionic 2 build
+ * changes, but you are of course welcome (and encouraged) to customize your
+ * build however you see fit.
+ */
+var buildBrowserify = require('ionic-gulp-browserify-typescript');
+var buildSass = require('ionic-gulp-sass-build');
+var copyHTML = require('ionic-gulp-html-copy');
+var copyFonts = require('ionic-gulp-fonts-copy');
+var copyScripts = require('ionic-gulp-scripts-copy');
+var tslint = require('ionic-gulp-tslint');
+
+var isRelease = argv.indexOf('--release') > -1;
+
+gulp.task('watch', ['clean'], function(done){
+  runSequence(
+    ['sass', 'html', 'fonts', 'scripts'],
+    function(){
+      gulpWatch('app/**/*.scss', function(){ gulp.start('sass'); });
+      gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
+      buildBrowserify({ watch: true }).on('end', done);
     }
-  }
-}
-
-// environment
-options.env = options.env || 'dev';
-// print options
-if (defaults && defaults[task]) {
-  console.log(chalk.green('defaults for task \'' + task + '\': '), defaults[task]);
-}
-// cordova command one of cordova's build commands?
-if (options.cordova) {
-  var cmds = ['build', 'run', 'emulate', 'prepare', 'serve'];
-  for (var i = 0, cmd; ((cmd = cmds[i])); i++) {
-    if (options.cordova.indexOf(cmd) >= 0) {
-      options.cordovaBuild = true;
-      break;
-    }
-  }
-}
-
-// load tasks
-requireDir('./gulp');
-
-// default task
-gulp.task('default', function () {
-  // cordova build command & gulp build
-  if (options.cordovaBuild && options.build !== false) {
-    return gulp.start('cordova-with-build');
-  }
-  // cordova build command & no gulp build
-  else if (options.cordovaBuild && options.build === false) {
-    return gulp.start('cordova-only-resources');
-  }
-  // cordova non-build command
-  else if (options.cordova) {
-    return gulp.start('cordova');
-  }
-  // just watch when cordova option not present
-  else {
-    return gulp.start('watch');
-  }
+  );
 });
+
+gulp.task('build', ['clean'], function(done){
+  runSequence(
+    ['sass', 'html', 'fonts', 'scripts'],
+    function(){
+      buildBrowserify({
+        minify: isRelease,
+        browserifyOptions: {
+          debug: !isRelease
+        },
+        uglifyOptions: {
+          mangle: false
+        }
+      }).on('end', done);
+    }
+  );
+});
+
+gulp.task('sass', buildSass);
+gulp.task('html', copyHTML);
+gulp.task('fonts', copyFonts);
+gulp.task('scripts', copyScripts);
+gulp.task('clean', function(){
+  return del('www/build');
+});
+gulp.task('lint', tslint);
