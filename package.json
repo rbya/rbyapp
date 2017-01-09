@@ -1,0 +1,30 @@
+{
+    "name": "rbyapp",
+    "version": "1.0.0",
+    "description": "RBYA Mobile app",
+    "main": "index.js",
+    "scripts": {
+        "test:client": "",
+        "test:service": "cd service && yarn run test",
+        "init:client": "cd client && yarn install",
+        "init:service": "cd service && yarn install",
+        "start:client": "cd client && ionic serve",
+        "start:service": "cd service && sails lift",
+        "init": "concurrently \"yarn run init:client\" \"yarn run init:service\"",
+        "start": "concurrently \"yarn run start:service\" \"yarn run start:client\"",
+        "test": "concurrently \"yarn run test:client\" \"yarn run test:service\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://genu@github.com/rbya/rbyapp.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/rbya/rbyapp/issues"
+    },
+    "homepage": "https://github.com/rbya/rbyapp#readme",
+    "dependencies": {
+        "concurrently": "^3.1.0"
+    }
+}
