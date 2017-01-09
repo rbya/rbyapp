@@ -1,0 +1,6 @@
+[submodule "client"]
+	path = client
+	url = https://genu@github.com/rbya/app-client.git
+[submodule "service"]
+	path = service
+	url = https://genu@github.com/rbya/app-service.git
