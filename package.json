@@ -8,7 +8,7 @@
         "test:service": "cd service && yarn run test",
         "init:client": "cd client && yarn install",
         "init:service": "cd service && yarn install",
-        "start:client": "cd client && ionic serve",
+        "start:client": "cd client && ionic serve --lab",
         "start:service": "cd service && sails lift",
         "init": "concurrently \"yarn run init:client\" \"yarn run init:service\"",
         "start": "concurrently \"yarn run start:service\" \"yarn run start:client\"",
