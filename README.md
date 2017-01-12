@@ -9,5 +9,5 @@
 2. Run `yarn run init` to download all dependences for the service and the client		
 3. Run `yarn start` to launch a local server and start the app in the browser		
  		
- **NOTE**		
- You only have to run `yarn run init` only the first time. `yarn start` can be used going forward to laumnch the app and start developing.
+**NOTE**		
+You only have to run `yarn run init` the first time. `yarn start` can be used going forward to launch the app and start developing.
