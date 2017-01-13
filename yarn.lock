@@ -45,13 +45,19 @@ escape-string-regexp@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
 
+gl-ionic2-env-configuration@^0.0.17:
+  version "0.0.17"
+  resolved "https://registry.yarnpkg.com/gl-ionic2-env-configuration/-/gl-ionic2-env-configuration-0.0.17.tgz#977ecced6a86c06e00c4ee0de6a7c55a18f9d774"
+  dependencies:
+    lodash "^4.17.2"
+
 has-ansi@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-0.1.0.tgz#84f265aae8c0e6a88a12d7022894b7568894c62e"
   dependencies:
     ansi-regex "^0.2.0"
 
-lodash@^4.5.1:
+lodash@^4.17.2, lodash@^4.5.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
