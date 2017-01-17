@@ -10,7 +10,7 @@
         "init:service": "cd service && yarn install",
         "start:client": "cd client && yarn run ionic:serve",
         "start:service": "cd service && sails lift",
-        "init": "concurrently \"yarn run init:client\" \"yarn run init:service\"",
+        "init": "yarn && concurrently \"yarn run init:client\" \"yarn run init:service\"",
         "start": "concurrently \"yarn run start:service\" \"yarn run start:client\"",
         "test": "concurrently \"yarn run test:client\" \"yarn run test:service\""
     },
