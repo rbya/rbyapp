@@ -9,10 +9,10 @@
         "init:client": "cd client && yarn install",
         "init:service": "cd service && yarn install",
         "start:client": "cd client && yarn run ionic:serve",
-        "start:service": "cd service && sails lift",
-        "init": "concurrently \"yarn run init:client\" \"yarn run init:service\"",
-        "start": "concurrently \"yarn run start:service\" \"yarn run start:client\"",
-        "test": "concurrently \"yarn run test:client\" \"yarn run test:service\""
+        "start:service": "cd service && yarn start",
+        "init": "yarn && npm-run-all --parallel init:client init:service",
+        "start": "npm-run-all --parallel start:service start:client",
+        "test": "npm-run-all --parallel test:client test:service"
     },
     "repository": {
         "type": "git",
@@ -25,7 +25,6 @@
     },
     "homepage": "https://github.com/rbya/rbyapp#readme",
     "dependencies": {
-        "concurrently": "^3.1.0",
-        "gl-ionic2-env-configuration": "^0.0.17"
+        "npm-run-all": "^4.0.1"
     }
 }
